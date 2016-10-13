@@ -5,8 +5,8 @@
 # foods that they eat in a separate table (if the food is unrecognized the app will store
 # it to be remembered later).
 #
-# The app will also initially ask the user if they are looking to maintain wieght, 
-# lose weight, or gain weight, and their favorite exercises and foods, andprovide them with
+# The app will also initially ask the user if they are looking to maintain wieght or
+# lose weight and their favorite exercises and foods, and provide them with
 # instructions for the day for food intake & exercise.
 #
 # Eventually, the app will be able to give users suggestions about foods that they commonly
@@ -21,18 +21,79 @@ require 'sqlite3'
 users = SQLite3::Database.new("users.db")
 users.results_as_hash = true
 
-@sign_in = nil
+create_users_table = <<-USRTBL
+	CREATE TABLE IF NOT EXISTS users(
+	id INTEGER PRIMARY KEY,
+	acctName VARCHAR(255),
+	sex CHARACTER,
+	age INT,
+	weight INT,
+	exercise VARCHAR(255),
+	lose BOOLEAN,
+	time INT,
+	daily_cals INT
+	);
+USRTBL
+
+@acctName = nil
+@sex = nil
+@age = nil
+@weight = nil
+@exercise = nil
+@lose = nil
+@time = nil
+@daily_cals = nil
 
 def user_interface 
 	puts "Welcome to Virtual Personal Trainer!"
 	3.times {|time| puts "               ---                  "}
 	puts "Would you like to sign in or create an account?"
 	puts "Enter 'y' to sign in or 'c' to create an account: "
-	@sign_in = gets.chomp.downcase
-		if @sign_in[0] == 'y'
+	sign_in = nil
+	sign_in = gets.chomp.downcase
+		if sign_in[0] == 'y'
 			sign_into_acct
 		else
 			create_new_acct
 		end
 end
+
+def create_new_acct
+	puts "Please enter an account name: "
+	@acctName = gets.chomp
+	puts "Please enter 'M' for male or 'F' for female: "
+	@sex = gets.chomp.downcase
+	puts "Please enter your age in years: "
+	@age = gets.chomp.to_i
+	puts "Please enter your weight in pounds: "
+	@weight = gets.chomp.to_i
+	puts "Please enter your favorite exericse: "
+	@exercise = gets.chomp
+	puts "Do you want to lose weight? (type 'y' for yes or 'n' for no): "
+	@lose = gets.chomp.downcase
+	if @lose[0] == 'y'
+		calculate_calories
+	else
+		@lose = 'false'
+		@daily_cals = 0
+		@time = 0
+	end
+end
+
+def calculate_calories
+	puts "How many pounds do you want to lose? "
+	pounds = gets.chomp.to_i
+	puts "Please enter a whole number of months you wish to lose the weight in: "
+	@time = gets.chomp.to_i
+	days = @time * 30
+	calories = pounds * 3500
+	@daily_cals = calories / days
+	puts "#{@daily_cals}"
+end
+
+user_interface
+
+
+
+
 
