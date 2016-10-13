@@ -33,6 +33,22 @@ def sign_into_acct
 		end
 	elsif @found == true && @login == true
 		puts "Welcome, #{user}!"
+		this_user = @users.execute("SELECT * FROM users WHERE acctName='#{user}'")
+		set_current_user_properties(this_user)
 		#put method for asking what they want to do here
+	end
+end
+
+def set_current_user_properties(usr)
+	usr.each do |attribute|
+		@acctName = attribute['acctName']
+		@password = attribute['password']
+		@sex = attribute['sex']
+		@age = attribute['age']
+		@weight = attribute['weight']
+		@exercise = attribute['exercise']
+		@lose = attribute['lose']
+		@time = attribute['time']
+		@daily_cals = attribute['daily_cals']
 	end
 end

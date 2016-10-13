@@ -37,17 +37,6 @@ require_relative 'sign_in'
 	);
 USRTBL
 
-
-@acctName = nil
-@password = nil
-@sex = nil
-@age = nil
-@weight = nil
-@exercise = nil
-@lose = nil
-@time = nil
-@daily_cals = nil
-
 def user_interface 
 	puts "Welcome to Virtual Personal Trainer!"
 	3.times {|time| puts "               ---                  "}
@@ -113,7 +102,8 @@ end
 
 user_interface
 
-
+p @acctName
+p @password
 
 
 
