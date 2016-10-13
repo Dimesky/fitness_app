@@ -18,10 +18,10 @@ require 'sqlite3'
 
 #create user db
 
-users = SQLite3::Database.new("users.db")
-users.results_as_hash = true
+@users = SQLite3::Database.new("users.db")
+@users.results_as_hash = true
 
-create_users_table = <<-USRTBL
+@create_users_table = <<-USRTBL
 	CREATE TABLE IF NOT EXISTS users(
 	id INTEGER PRIMARY KEY,
 	acctName VARCHAR(255),
@@ -62,7 +62,7 @@ def create_new_acct
 	puts "Please enter an account name: "
 	@acctName = gets.chomp
 	puts "Please enter 'M' for male or 'F' for female: "
-	@sex = gets.chomp.downcase
+	@sex = gets.chomp[0].upcase
 	puts "Please enter your age in years: "
 	@age = gets.chomp.to_i
 	puts "Please enter your weight in pounds: "
@@ -78,6 +78,7 @@ def create_new_acct
 		@daily_cals = 0
 		@time = 0
 	end
+	create_user
 end
 
 def calculate_calories
@@ -88,7 +89,13 @@ def calculate_calories
 	days = @time * 30
 	calories = pounds * 3500
 	@daily_cals = calories / days
-	puts "#{@daily_cals}"
+end
+
+def create_user
+	@users.execute(@create_users_table)
+	@users.execute("INSERT INTO users (acctName, sex, age, weight, exercise, lose, time
+		, daily_cals) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [@acctName, @sex, @age, @weight,
+		@exercise, @lose, @time, @daily_cals])
 end
 
 user_interface
