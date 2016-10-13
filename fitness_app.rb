@@ -37,7 +37,8 @@ require_relative 'sign_in'
 	);
 USRTBL
 
-def user_interface 
+# User interface to welcome user to app and determine if the should sign in, create new acct, or exitn
+def user_interface
 	puts "Welcome to Virtual Personal Trainer!"
 	3.times {|time| puts "               ---                  "}
 	puts "Would you like to sign in or create an account?"
@@ -53,6 +54,7 @@ def user_interface
 		end
 end
 
+# Asks user for info to build new account
 def create_new_acct
 	puts "Please enter an account name: "
 	@acctName = gets.chomp
@@ -78,6 +80,7 @@ def create_new_acct
 	create_user
 end
 
+# Method to calculate calories based on weight lost/time
 def calculate_calories
 	puts "How many pounds do you want to lose? "
 	pounds = gets.chomp.to_i
@@ -88,6 +91,7 @@ def calculate_calories
 	@daily_cals = calories / days
 end
 
+# Method to create user in db based off of new user values
 def create_user
 	@users.execute(@create_users_table)
 	@users.execute("INSERT INTO users (acctName, password, sex, age, weight, exercise, lose, time
@@ -95,15 +99,12 @@ def create_user
 		@exercise, @lose, @time, @daily_cals])
 end
 
+# Method to provide user an exit message
 def exit_msg
 	3.times {|time| puts "               ---              "}
 	puts "Great job today, see you tomorrow!"
 end
 
 user_interface
-
-p @acctName
-p @password
-
 
 

@@ -1,5 +1,5 @@
 
-
+# Method to sign into a user account if it exists & password is correct
 def sign_into_acct
 	@login = false
 	@found = false
@@ -39,6 +39,7 @@ def sign_into_acct
 	end
 end
 
+# Method to set values of a user from the database to the current working values 
 def set_current_user_properties(usr)
 	usr.each do |attribute|
 		@acctName = attribute['acctName']
