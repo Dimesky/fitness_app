@@ -13,3 +13,26 @@
 # eat that can be cut out of their diet (with reminders based on when they usually eat
 # those foods), and give people reminders throughout the day to exercise based on their
 # total food intake for the day.
+
+require 'sqlite3'
+
+#create user db
+
+users = SQLite3::Database.new("users.db")
+users.results_as_hash = true
+
+@sign_in = nil
+
+def user_interface 
+	puts "Welcome to Virtual Personal Trainer!"
+	3.times {|time| puts "               ---                  "}
+	puts "Would you like to sign in or create an account?"
+	puts "Enter 'y' to sign in or 'c' to create an account: "
+	@sign_in = gets.chomp.downcase
+		if @sign_in[0] == 'y'
+			sign_into_acct
+		else
+			create_new_acct
+		end
+end
+
