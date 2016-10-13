@@ -48,13 +48,15 @@ def user_interface
 	puts "Welcome to Virtual Personal Trainer!"
 	3.times {|time| puts "               ---                  "}
 	puts "Would you like to sign in or create an account?"
-	puts "Enter 'y' to sign in or 'c' to create an account: "
+	puts "Enter 's' to sign in or 'c' to create an account (or 'x' to exit): "
 	sign_in = nil
 	sign_in = gets.chomp.downcase
-		if sign_in[0] == 'y'
+		if sign_in[0] == 's'
 			sign_into_acct
-		else
+		elsif sign_in[0] == 'c'
 			create_new_acct
+		else
+			exit_msg
 		end
 end
 
@@ -96,6 +98,11 @@ def create_user
 	@users.execute("INSERT INTO users (acctName, sex, age, weight, exercise, lose, time
 		, daily_cals) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [@acctName, @sex, @age, @weight,
 		@exercise, @lose, @time, @daily_cals])
+end
+
+def exit_msg
+	3.times {|time| puts "               ---              "}
+	puts "Great job today, see you tomorrow!"
 end
 
 user_interface
