@@ -15,6 +15,7 @@
 # total food intake for the day.
 
 require 'sqlite3'
+require_relative 'sign_in'
 
 #create user db
 
@@ -25,6 +26,7 @@ require 'sqlite3'
 	CREATE TABLE IF NOT EXISTS users(
 	id INTEGER PRIMARY KEY,
 	acctName VARCHAR(255),
+	password VARCHAR(255),
 	sex CHARACTER,
 	age INT,
 	weight INT,
@@ -35,7 +37,9 @@ require 'sqlite3'
 	);
 USRTBL
 
+
 @acctName = nil
+@password = nil
 @sex = nil
 @age = nil
 @weight = nil
@@ -63,6 +67,8 @@ end
 def create_new_acct
 	puts "Please enter an account name: "
 	@acctName = gets.chomp
+	puts "Please enter a password: "
+	@password = gets.chomp
 	puts "Please enter 'M' for male or 'F' for female: "
 	@sex = gets.chomp[0].upcase
 	puts "Please enter your age in years: "
@@ -95,8 +101,8 @@ end
 
 def create_user
 	@users.execute(@create_users_table)
-	@users.execute("INSERT INTO users (acctName, sex, age, weight, exercise, lose, time
-		, daily_cals) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [@acctName, @sex, @age, @weight,
+	@users.execute("INSERT INTO users (acctName, password, sex, age, weight, exercise, lose, time
+		, daily_cals) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [@acctName, @password, @sex, @age, @weight,
 		@exercise, @lose, @time, @daily_cals])
 end
 
