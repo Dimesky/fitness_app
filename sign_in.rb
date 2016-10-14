@@ -1,3 +1,4 @@
+require_relative 'user_action'
 
 # Method to sign into a user account if it exists & password is correct
 def sign_into_acct
@@ -28,14 +29,16 @@ def sign_into_acct
 		second_try = gets.chomp[0].downcase
 		if second_try == 's'
 			sign_into_acct
-		else
+		elsif second_try == 'c'
 			create_new_acct
+		else
+			exit_msg
 		end
 	elsif @found == true && @login == true
 		puts "Welcome, #{user}!"
 		this_user = @users.execute("SELECT * FROM users WHERE acctName='#{user}'")
 		set_current_user_properties(this_user)
-		#put method for asking what they want to do here
+		prompt_user_action
 	end
 end
 

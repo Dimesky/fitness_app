@@ -43,9 +43,8 @@ def user_interface
 	3.times {|time| puts "               ---                  "}
 	puts "Would you like to sign in or create an account?"
 	puts "Enter 's' to sign in or 'c' to create an account (or 'x' to exit): "
-	sign_in = nil
 	sign_in = gets.chomp.downcase
-		if sign_in[0] == 's'
+		if sign_in[0] == 's' 
 			sign_into_acct
 		elsif sign_in[0] == 'c'
 			create_new_acct
@@ -71,6 +70,7 @@ def create_new_acct
 	puts "Do you want to lose weight? (type 'y' for yes or 'n' for no): "
 	@lose = gets.chomp.downcase
 	if @lose[0] == 'y'
+		@lose = 'true'
 		calculate_calories
 	else
 		@lose = 'false'
@@ -78,6 +78,7 @@ def create_new_acct
 		@time = 0
 	end
 	create_user
+	prompt_user_action
 end
 
 # Method to calculate calories based on weight lost/time
