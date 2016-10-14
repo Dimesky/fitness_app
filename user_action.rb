@@ -5,20 +5,19 @@ def prompt_user_action
 	puts "Please select the number corresponding with your desired action: "
 	puts "1. Enter calories consumed today"
 	puts "2. Enter favorite exercises"
-	puts "3. Request exercise recommendation for today"
-	puts "4. Request recommendation for common foods to eliminate for today"
-	puts "5. Exit"
+	puts "3. Request for exercise and food to eliminate based on day selected"
+	puts "4. Exit"
 	user_choice = gets.chomp.to_i
 	if user_choice == 1
-		enter_calories
 		#method to enter calories
+		enter_calories
 	elsif user_choice == 2
-		#method to request exercises
+		#method to enter exercises
+		enter_exercises
 	elsif user_choice == 3
-		#method to request total calories burned and weight lost
+		#method to request exercise and food to cut based on date
+		request_data
 	elsif user_choice == 4
-		#method to request foods to quit
-	elsif user_choice == 5
 		exit_msg
 	else
 		puts "You have made an invalid selection -"
@@ -64,6 +63,47 @@ def log_calories
 	@users.execute("INSERT INTO days_logged (date, food, amount, calories, users_id) VALUES (?, ?, ?,
 		?, ?)", [time, @food, @amount, @cals, current_user_id])
 end
+
+def enter_exercises
+	@exercise_hash = {}
+	exercises = nil
+	while exercises != 'x'
+		puts "Please enter your favorits exercises and avg heart rate of the exercise in the form of 'exercise, heart rate' (or type 'x' to quit): "
+		exercises = gets.chomp
+		exercise_split = exercises.split(',')
+		if exercises != 'x'
+			@exercise = exercise_split[0]
+			@avg_hr = exercise_split[1]
+			@exercise_hash[@exercise] = @avg_hr
+			log_exercises
+		end
+	end
+	if exercises == 'x'
+		puts "You entered: "
+		puts "\n"
+		@exercise_hash.each do |exercise, hr|
+			puts "Exercise: #{exercise}"
+			puts "------------------"
+			puts "AVG HR: #{hr}"
+			puts "\n"
+		end
+	end
+	prompt_user_action
+end
+
+def log_exercises
+	current_user_id = @users.execute("SELECT id FROM users WHERE acctName='#{@acctName}'")
+	current_user_id = current_user_id[0]['id']
+	@users.execute(@create_favorite_exercises_table)
+	@users.execute("INSERT INTO favorite_exercises (exercise, avg_hr, users_id) VALUES (?, ?, ?)", [@exercise, @avg_hr, current_user_id])
+end
+
+
+
+
+
+
+
 
 
 

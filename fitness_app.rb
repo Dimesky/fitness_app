@@ -51,9 +51,9 @@ USRTBL
 	CREATE TABLE IF NOT EXISTS favorite_exercises(
 	id INTEGER PRIMARY KEY,
 	exercise VARCHAR(255),
-	calores_burned VARCHAR(255),
+	avg_hr INT,
 	users_id INT
-	)
+	);
 USRTBL
 
 
