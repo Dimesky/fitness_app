@@ -50,6 +50,7 @@ def set_current_user_properties(usr)
 		@sex = attribute['sex']
 		@age = attribute['age']
 		@weight = attribute['weight']
+		@height = attribute['height']
 		@exercise = attribute['exercise']
 		@lose = attribute['lose']
 		@time = attribute['time']

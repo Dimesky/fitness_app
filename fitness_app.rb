@@ -30,6 +30,7 @@ require_relative 'sign_in'
 	sex CHARACTER,
 	age INT,
 	weight INT,
+	height INT,
 	lose BOOLEAN,
 	time INT,
 	daily_cals INT
@@ -85,6 +86,8 @@ def create_new_acct
 	@age = gets.chomp.to_i
 	puts "Please enter your weight in pounds: "
 	@weight = gets.chomp.to_i
+	puts "Please enter your height in inches: "
+	@height = gets.chomp.to_i
 	puts "Do you want to lose weight? (type 'y' for yes or 'n' for no): "
 	@lose = gets.chomp.downcase
 	if @lose[0] == 'y'
@@ -113,9 +116,9 @@ end
 # Method to create user in db based off of new user values
 def create_user
 	@users.execute(@create_users_table)
-	@users.execute("INSERT INTO users (acctName, password, sex, age, weight, lose, time
+	@users.execute("INSERT INTO users (acctName, password, sex, age, weight, height, lose, time
 		, daily_cals) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [@acctName, @password, @sex, @age, @weight,
-		@lose, @time, @daily_cals])
+		@height, @lose, @time, @daily_cals])
 end
 
 # Method to provide user an exit message

@@ -5,7 +5,7 @@ def prompt_user_action
 	puts "Please select the number corresponding with your desired action: "
 	puts "1. Enter calories consumed today"
 	puts "2. Enter favorite exercises"
-	puts "3. Request for exercise and food to eliminate based on day selected"
+	puts "3. Request to display information based on day selected"
 	puts "4. Exit"
 	user_choice = gets.chomp.to_i
 	if user_choice == 1
@@ -32,12 +32,14 @@ def enter_calories
 		puts "Please enter the food and calories in the form of 'food, amount, calories' where 'amount' is the amount in ounces of food (type 'x' when finished): "
 		food_cals = gets.chomp
 		food_cal_split = food_cals.split(',')
-		if food_cals != 'x'
+		if food_cals != 'x' && food_cal_split.length == 3
 			@food = food_cal_split[0]
 			@amount = food_cal_split[1]
 			@cals = food_cal_split[2]
 			@food_hash[food_cal_split[0]] = [food_cal_split[1], food_cal_split[2]]
 			log_calories
+		elsif food_cal_split.length != 3 && food_cals != 'x'
+			puts "Invalid entry, please try again"
 		end
 	end
 	if food_cals == 'x'
@@ -117,19 +119,29 @@ def request_data
 	usr_date_food.each do |datefood|
 		total_cals += datefood['calories']
 	end
+	calories_left_to_burn = total_cals - calculate_bmr
+	calory_surplus = calories_left_to_burn + @daily_cals
 	puts "For a total of #{total_cals} calories"
-	if total_cals <= @daily_cals
+	if calory_surplus <= 0
+		puts "Calories you need to lose per day: #{@daily_cals}"
+		puts "Your resting metabolic rate: #{calculate_bmr} cal"
 		puts "You don't need to change anything...Great job!!!"
 	else
-		cals_over = total_cals - @daily_cals
-		puts "You were #{cals_over} calories over budget!"
+		cals_over = total_cals - (@daily_cals + calculate_bmr)
+		puts "You needed to burn #{cals_over.abs} additional calories!"
 	end
 	puts "********************************************************************"
 	10.times {|time| puts "\n"}
 	prompt_user_action
 end
 
-
+def calculate_bmr
+	if @sex == 'M'
+		bmr = (((6.25 * @weight) + (12.7 * @height) - (6.76 * @age) + 66) * 1.1)
+	elsif @sex == 'F'
+		bmr = (((4.35 * @weight) + (4.7 * @height) - (4.68 * @age) + 655) * 1.1)
+	end
+end
 
 
 
