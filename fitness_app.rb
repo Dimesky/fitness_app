@@ -65,13 +65,17 @@ def user_interface
 	puts "Would you like to sign in or create an account?"
 	puts "Enter 's' to sign in or 'c' to create an account (or 'x' to exit): "
 	sign_in = gets.chomp.downcase
-		if sign_in[0] == 's' 
-			sign_into_acct
-		elsif sign_in[0] == 'c'
-			create_new_acct
-		else
-			exit_msg
-		end
+	while sign_in != 's' && sign_in != 'c' && sign_in != 'x'
+		puts "Invalid entry, please try again: "
+		sign_in = gets.chomp.downcase
+	end
+	if sign_in[0] == 's' 
+		sign_into_acct
+	elsif sign_in[0] == 'c'
+		create_new_acct
+	else
+		exit_msg
+	end
 end
 
 # Asks user for info to build new account

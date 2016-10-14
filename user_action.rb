@@ -103,9 +103,6 @@ end
 def request_data
 	puts "Please enter a date in the format of 'day-month-year': "
 	request_date = gets.chomp
-	# SELECT users.First_name, users.Last_name, businesses.name, reviews.stars, 
-	# reviews.comment FROM businesses JOIN users JOIN reviews ON 
-	# reviews.businesses_id = businesses.id AND reviews.users_id = users.id;
 	usr_date_food = @users.execute("SELECT days_logged.food
 		, days_logged.amount, days_logged.calories FROM users JOIN days_logged 
 		ON users.id = days_logged.users_id WHERE acctName = '#{@acctName}' OR date = '#{request_date}';")
