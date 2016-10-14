@@ -30,12 +30,32 @@ require_relative 'sign_in'
 	sex CHARACTER,
 	age INT,
 	weight INT,
-	exercise VARCHAR(255),
 	lose BOOLEAN,
 	time INT,
 	daily_cals INT
 	);
 USRTBL
+
+@create_days_logged_table = <<-USRTBL
+	CREATE TABLE IF NOT EXISTS days_logged(
+	id INTEGER PRIMARY KEY,
+	date DATE,
+	food VARCHAR(255),
+	amount INT,
+	calories INT,
+	users_id INT
+	);
+USRTBL
+
+@create_favorite_exercises_table = <<-USRTBL
+	CREATE TABLE IF NOT EXISTS favorite_exercises(
+	id INTEGER PRIMARY KEY,
+	exercise VARCHAR(255),
+	calores_burned VARCHAR(255),
+	users_id INT
+	)
+USRTBL
+
 
 # User interface to welcome user to app and determine if the should sign in, create new acct, or exitn
 def user_interface
@@ -65,8 +85,6 @@ def create_new_acct
 	@age = gets.chomp.to_i
 	puts "Please enter your weight in pounds: "
 	@weight = gets.chomp.to_i
-	puts "Please enter your favorite exericse: "
-	@exercise = gets.chomp
 	puts "Do you want to lose weight? (type 'y' for yes or 'n' for no): "
 	@lose = gets.chomp.downcase
 	if @lose[0] == 'y'
@@ -95,9 +113,9 @@ end
 # Method to create user in db based off of new user values
 def create_user
 	@users.execute(@create_users_table)
-	@users.execute("INSERT INTO users (acctName, password, sex, age, weight, exercise, lose, time
+	@users.execute("INSERT INTO users (acctName, password, sex, age, weight, lose, time
 		, daily_cals) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [@acctName, @password, @sex, @age, @weight,
-		@exercise, @lose, @time, @daily_cals])
+		@lose, @time, @daily_cals])
 end
 
 # Method to provide user an exit message
