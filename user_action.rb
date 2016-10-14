@@ -98,7 +98,36 @@ def log_exercises
 	@users.execute("INSERT INTO favorite_exercises (exercise, avg_hr, users_id) VALUES (?, ?, ?)", [@exercise, @avg_hr, current_user_id])
 end
 
-
+def request_data
+	puts "Please enter a date in the format of 'day-month-year': "
+	request_date = gets.chomp
+	# SELECT users.First_name, users.Last_name, businesses.name, reviews.stars, 
+	# reviews.comment FROM businesses JOIN users JOIN reviews ON 
+	# reviews.businesses_id = businesses.id AND reviews.users_id = users.id;
+	usr_date_food = @users.execute("SELECT days_logged.food
+		, days_logged.amount, days_logged.calories FROM users JOIN days_logged 
+		ON users.id = days_logged.users_id WHERE acctName = '#{@acctName}' OR date = '#{request_date}';")
+	10.times {|time| puts "\n"}
+	puts "********************************************************************"
+	puts "On #{request_date} you ate: "
+	usr_date_food.each do |datefood|
+		puts "#{datefood['food']}"
+	end
+	total_cals = 0
+	usr_date_food.each do |datefood|
+		total_cals += datefood['calories']
+	end
+	puts "For a total of #{total_cals} calories"
+	if total_cals <= @daily_cals
+		puts "You don't need to change anything...Great job!!!"
+	else
+		cals_over = total_cals - @daily_cals
+		puts "You were #{cals_over} calories over budget!"
+	end
+	puts "********************************************************************"
+	10.times {|time| puts "\n"}
+	prompt_user_action
+end
 
 
 
