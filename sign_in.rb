@@ -26,7 +26,11 @@ def sign_into_acct
 	end
 	if @found == false
 		puts "Incorrect username. Type 's' to try again or 'c' to create an account: "
-		second_try = gets.chomp[0].downcase
+		second_try = gets.chomp.downcase
+		while second_try != 's' && second_try != 'c'
+			puts "Please enter 's' to sign in or 'c' to create an account: "
+			second_try = gets.chomp.downcase
+		end
 		if second_try == 's'
 			sign_into_acct
 		elsif second_try == 'c'
