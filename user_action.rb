@@ -108,24 +108,28 @@ def request_data
 		ON users.id = days_logged.users_id WHERE acctName = '#{@acctName}' AND date = '#{request_date}';")
 	10.times {|time| puts "\n"}
 	puts "********************************************************************"
-	puts "On #{request_date} you ate: "
-	usr_date_food.each do |datefood|
-		puts "#{datefood['food']}"
-	end
-	total_cals = 0
-	usr_date_food.each do |datefood|
-		total_cals += datefood['calories']
-	end
-	calories_left_to_burn = total_cals - calculate_bmr
-	calory_surplus = calories_left_to_burn + @daily_cals
-	puts "For a total of #{total_cals} calories"
-	if calory_surplus <= 0
-		puts "Calories you need to lose per day: #{@daily_cals}"
-		puts "Your resting metabolic rate: #{calculate_bmr} cal"
-		puts "You don't need to change anything...Great job!!!"
+	if !usr_date_food.empty?
+		puts "On #{request_date} you ate: "
+		usr_date_food.each do |datefood|
+			puts "#{datefood['food']}"
+		end
+		total_cals = 0
+		usr_date_food.each do |datefood|
+			total_cals += datefood['calories']
+		end
+		calories_left_to_burn = total_cals - calculate_bmr
+		calory_surplus = calories_left_to_burn + @daily_cals
+		puts "For a total of #{total_cals} calories"
+		if calory_surplus <= 0
+			puts "Calories you need to lose per day: #{@daily_cals}"
+			puts "Your resting metabolic rate: #{calculate_bmr.floor} cal"
+			puts "You don't need to change anything...Great job!!!"
+		else
+			cals_over = total_cals - (@daily_cals + calculate_bmr)
+			puts "You needed to burn #{cals_over.abs} additional calories!"
+		end
 	else
-		cals_over = total_cals - (@daily_cals + calculate_bmr)
-		puts "You needed to burn #{cals_over.abs} additional calories!"
+		puts "There is no calorie data for #{request_date}. Please choose another date!"
 	end
 	puts "********************************************************************"
 	10.times {|time| puts "\n"}
