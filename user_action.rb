@@ -1,12 +1,13 @@
 
 
 def prompt_user_action
-	3.times {|time| puts "               |||               "}
+	3.times {|time| puts "\n"}
 	puts "Please select the number corresponding with your desired action: "
 	puts "1. Enter calories consumed today"
 	puts "2. Enter favorite exercises"
-	puts "3. Request to display information based on day selected"
-	puts "4. Exit"
+	puts "3. Display favorite exercises"
+	puts "4. Request to display information based on day selected"
+	puts "5. Exit"
 	user_choice = gets.chomp.to_i
 	if user_choice == 1
 		#method to enter calories
@@ -15,9 +16,12 @@ def prompt_user_action
 		#method to enter exercises
 		enter_exercises
 	elsif user_choice == 3
+		#method to display exercises
+		display_exercises
+	elsif user_choice == 4
 		#method to request exercise and food to cut based on date
 		request_data
-	elsif user_choice == 4
+	elsif user_choice == 5
 		exit_msg
 	else
 		puts "You have made an invalid selection -"
@@ -43,6 +47,7 @@ def enter_calories
 		end
 	end
 	if food_cals == 'x'
+		4.times {|time| puts "\n"}
 		puts "You entered: "
 		puts "\n"
 		@food_hash.each do |food, amount_and_cals|
@@ -81,6 +86,7 @@ def enter_exercises
 		end
 	end
 	if exercises == 'x'
+		4.times {|time| puts "\n"}
 		puts "You entered: "
 		puts "\n"
 		@exercise_hash.each do |exercise, hr|
@@ -100,13 +106,30 @@ def log_exercises
 	@users.execute("INSERT INTO favorite_exercises (exercise, avg_hr, users_id) VALUES (?, ?, ?)", [@exercise, @avg_hr, current_user_id])
 end
 
+def display_exercises
+	exercises = @users.execute("SELECT favorite_exercises.exercise, favorite_exercises.avg_hr
+		FROM users JOIN favorite_exercises ON users.id = favorite_exercises.users_id WHERE acctName='#{@acctName}';")
+	5.times {|time| puts "\n"}
+	puts "********************************************************************"
+	if !exercises.empty?
+		exercises.each do |exercise|
+			puts "#{exercise['exercise']}: #{exercise['avg_hr']}"
+		end
+	else
+		puts "No exercises entered yet."
+	end
+	puts "********************************************************************"
+	2.times {|time| puts "\n"}
+	prompt_user_action
+end
+
 def request_data
 	puts "Please enter a date in the format of 'MM-DD-YYYY.': "
 	request_date = gets.chomp
 	usr_date_food = @users.execute("SELECT days_logged.food
 		, days_logged.amount, days_logged.calories, days_logged.date FROM users JOIN days_logged 
 		ON users.id = days_logged.users_id WHERE acctName = '#{@acctName}' AND date = '#{request_date}';")
-	10.times {|time| puts "\n"}
+	5.times {|time| puts "\n"}
 	puts "********************************************************************"
 	if !usr_date_food.empty?
 		puts "On #{request_date} you ate: "
@@ -132,7 +155,7 @@ def request_data
 		puts "There is no calorie data for #{request_date}. Please choose another date!"
 	end
 	puts "********************************************************************"
-	10.times {|time| puts "\n"}
+	2.times {|time| puts "\n"}
 	prompt_user_action
 end
 

@@ -61,7 +61,7 @@ USRTBL
 # User interface to welcome user to app and determine if the should sign in, create new acct, or exitn
 def user_interface
 	puts "Welcome to Virtual Personal Trainer!"
-	3.times {|time| puts "               ---                  "}
+	3.times {|time| puts "\n"}
 	puts "Would you like to sign in or create an account?"
 	puts "Enter 's' to sign in or 'c' to create an account (or 'x' to exit): "
 	sign_in = gets.chomp.downcase
@@ -127,7 +127,7 @@ end
 
 # Method to provide user an exit message
 def exit_msg
-	3.times {|time| puts "               ---              "}
+	3.times {|time| puts "\n"}
 	puts "Great job today, see you tomorrow!"
 end
 
