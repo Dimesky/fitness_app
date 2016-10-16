@@ -101,11 +101,11 @@ def log_exercises
 end
 
 def request_data
-	puts "Please enter a date in the format of 'day-month-year': "
+	puts "Please enter a date in the format of 'MM-DD-YYYY.': "
 	request_date = gets.chomp
 	usr_date_food = @users.execute("SELECT days_logged.food
-		, days_logged.amount, days_logged.calories FROM users JOIN days_logged 
-		ON users.id = days_logged.users_id WHERE acctName = '#{@acctName}' OR date = '#{request_date}';")
+		, days_logged.amount, days_logged.calories, days_logged.date FROM users JOIN days_logged 
+		ON users.id = days_logged.users_id WHERE acctName = '#{@acctName}' AND date = '#{request_date}';")
 	10.times {|time| puts "\n"}
 	puts "********************************************************************"
 	puts "On #{request_date} you ate: "
